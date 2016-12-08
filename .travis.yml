@@ -6,6 +6,9 @@ branches:
   - "/^v[0-9]/"
 after_success:
 - bash <(curl -s https://codecov.io/bash)
+before_deploy:
+- mkdir dist
+- coffee --compile --output dist index.coffee
 deploy:
   provider: npm
   email: serveradmin@octoblu.com
