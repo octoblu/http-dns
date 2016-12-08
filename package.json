@@ -1,0 +1,27 @@
+{
+  "name": "http-dns",
+  "version": "1.0.0",
+  "description": "Node DNS library that uses Google's HTTPS DNS API for doing queries in the browser",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "mocha "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/octoblu/http-dns.git"
+  },
+  "keywords": [
+    "dns",
+    "http"
+  ],
+  "author": "Octoblu, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/octoblu/http-dns/issues"
+  },
+  "homepage": "https://github.com/octoblu/http-dns#readme",
+  "dependencies": {
+    "lodash": "^4.17.2",
+    "superagent": "^3.1.0"
+  }
+}
