@@ -1,10 +1,11 @@
 {
   "name": "http-dns",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Node DNS library that uses Google's HTTPS DNS API for doing queries in the browser",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo 'tests are for those who are unsure of victory'"
+    "test": "echo 'tests are for those who are unsure of victory'",
+    "build": "mkdir -p dist && coffee --compile --output dist index.coffee"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
     "lodash": "^4.17.2",
     "superagent": "^3.1.0",
     "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.12.1"
   }
 }

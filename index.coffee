@@ -1,8 +1,11 @@
 superagent = require 'superagent'
 url        = require 'url'
-get        = require 'lodash/get'
-map        = require 'lodash/map'
-split      = require 'lodash/split'
+
+_ = {
+  get:   require 'lodash/get'
+  map:   require 'lodash/map'
+  split: require 'lodash/split'
+}
 
 resolveSrv = (hostname, callback) ->
   uri = url.format({
@@ -28,10 +31,10 @@ _parseSrvResult = (result, callback) ->
     body = JSON.parse(result.text)
   catch error
     return callback error
-  return callback null, map(get(body, 'Answer'), _parseSrvRecord)
+  return callback null, _.map(_.get(body, 'Answer'), _parseSrvRecord)
 
 _parseSrvRecord = (record) ->
-  [priority, weight, port, name] = split record.data, ' '
+  [priority, weight, port, name] = _.split record.data, ' '
   return { priority, weight, port, name }
 
 
