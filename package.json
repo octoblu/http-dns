@@ -1,11 +1,11 @@
 {
   "name": "http-dns",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Node DNS library that uses Google's HTTPS DNS API for doing queries in the browser",
   "main": "dist/index.js",
   "scripts": {
     "test": "mocha",
-    "build": "mkdir -p dist && coffee --compile --output dist index.coffee",
+    "build": "mkdir -p dist && coffee --compile --output dist src/*.coffee",
     "coverage": "nyc npm test",
     "mocha:json": "mocha --reporter json > coverage/mocha.json",
     "test:watch": "mocha -w -R mocha-multi --reporter-options spec=-,mocha-osx-reporter=-"
