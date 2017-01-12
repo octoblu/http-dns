@@ -1,6 +1,6 @@
 {
   "name": "http-dns",
-  "version": "2.0.6",
+  "version": "3.0.0",
   "description": "Node DNS library that uses Google's HTTPS DNS API for doing queries in the browser",
   "main": "dist/index.js",
   "scripts": {

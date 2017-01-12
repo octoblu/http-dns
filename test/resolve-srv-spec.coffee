@@ -5,10 +5,12 @@ enableDestroy = require 'server-destroy'
 shmock        = require 'shmock'
 url           = require 'url'
 
+Cache = require '../src/cache'
 dns = require '../src'
 
 describe '->resolveSrv', ->
   beforeEach ->
+    Cache.clearAll()
     @dnsServer = shmock()
     enableDestroy @dnsServer
     dns.DNS_HTTP_SERVER = url.format protocol: 'http', hostname: 'localhost', port: @dnsServer.address().port
@@ -43,6 +45,18 @@ describe '->resolveSrv', ->
 
       it 'should yield the records', ->
         expect(@addresses).to.deep.equal [{ priority: 10, weight: 5, port: 80, name: 'meshblu-http.example.org' }]
+
+      describe 'when queried again within the TTL period', ->
+        beforeEach (done) ->
+          @dnsServer
+            .get '/resolve'
+            .query type: 'SRV', name: '_this._http.example.org'
+            .reply 599
+
+          dns.resolveSrv '_this._http.example.org', (error, @addresses) => done error
+
+        it 'should yield the records', ->
+          expect(@addresses).to.deep.equal [{ priority: 10, weight: 5, port: 80, name: 'meshblu-http.example.org' }]
 
   describe 'when an SRV does not exist', ->
     beforeEach ->

@@ -23,18 +23,19 @@ class Srv
     catch error
       return callback error
 
-    answer = _.get(body, 'Answer')
-    return callback Srv.ENODATA({body}) unless answer?
-    return callback null, _.map(answer, Srv.parseRecord)
+    records = _.get(body, 'Answer')
+    return callback Srv.ENODATA({body}) unless records?
+    return callback null, _.map(records, Srv.parseRecord)
 
   @parseRecord: (record) ->
     [priority, weight, port, name] = _.split record.data, ' '
     return {
-      name:     _.trimEnd name, '.'
-      priority: parseInt(priority)
-      weight:   parseInt(weight)
-      port:     parseInt(port)
+      ttl: record.TTL
+      address:
+        name:     _.trimEnd name, '.'
+        priority: parseInt(priority)
+        weight:   parseInt(weight)
+        port:     parseInt(port)
     }
-
 
 module.exports = Srv
