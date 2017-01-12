@@ -1,5 +1,6 @@
 _ = {
   pull: require 'lodash/pull'
+  isEmpty: require 'lodash/isEmpty'
 }
 CACHE = {}
 
@@ -15,6 +16,7 @@ class Cache
 
   @pull: (type, hostname, address) =>
     _.pull CACHE[type]?[hostname], address
+    delete CACHE[type]?[hostname] if _.isEmpty CACHE[type]?[hostname]
 
   @set: (type, hostname, address, ttl) =>
     CACHE[type] ?= {}

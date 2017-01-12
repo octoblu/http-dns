@@ -25,7 +25,7 @@ describe '->resolveSrv', ->
         Answer: [{
           name: "_this._http.example.org."
           type: 33
-          TTL: 229
+          TTL: 1
           data: "10 5 80 meshblu-http.example.org."
         }]
       }
@@ -57,6 +57,37 @@ describe '->resolveSrv', ->
 
         it 'should yield the records', ->
           expect(@addresses).to.deep.equal [{ priority: 10, weight: 5, port: 80, name: 'meshblu-http.example.org' }]
+
+      describe 'when queried again outside the TTL period', ->
+        beforeEach 'set new SRV response', ->
+          response = {
+            Status: 0
+            Answer: [{
+              name: "_this._http.example.org."
+              type: 33
+              TTL: 229
+              data: "10 5 80 meshblu-http.somewhere.else."
+            }]
+          }
+
+          responseHeaders = {
+            'Content-Type': 'application/x-javascript; charset=UTF-8'
+          }
+
+          @dnsServer
+            .get '/resolve'
+            .query type: 'SRV', name: '_this._http.example.org'
+            .reply 200, response, responseHeaders
+
+        beforeEach (done) ->
+          @timeout 3000
+
+          setTimeout =>
+            dns.resolveSrv '_this._http.example.org', (error, @addresses) => done error
+          , 2000
+
+        it 'should yield the new record', ->
+          expect(@addresses).to.deep.equal [{ priority: 10, weight: 5, port: 80, name: 'meshblu-http.somewhere.else' }]
 
   describe 'when an SRV does not exist', ->
     beforeEach ->
